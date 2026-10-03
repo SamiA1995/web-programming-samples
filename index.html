@@ -1,0 +1,150 @@
+<html>
+    <head>
+        <title>Web Programming Samples</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1>This is a website for presenting HTML, CSS, JavaScript and JQuery samples</h1>
+
+        <p>The document object model (DOM), consists of elements or nodes. The elements have attribute and text nodes, or another child element node.</p>
+
+        <p>
+            <b>Step 1:</b> Access the element by selecting an individual element by id, a group of elements by class, or traversing the DOM tree with siblings, parents, or childs.
+            <br /><br />
+            For example, use: 
+            <br /><br />
+            var itemOne = document.getElementByID('one');
+            <br /> <br />
+            var elements = document.getElementsByClassName('hot');
+            <br />
+            if(elements.length > 0) {
+                <br />
+                &nbsp;&nbsp;&nbsp;&nbsp;for(var i = 0; i < elements.length; i++) {<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;elements[i].className = 'cool';<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+            }
+            <br /><br />
+            You can select by CSS as well:
+            <br /><br />
+            var el = document.querySelector('li.hot');
+            <br />
+            el.className = 'cool';
+            <br /><br />
+            var els = document.querySelectorAll('li.hot');
+            <br />
+            els[1].className = 'cool';
+            <br /><br />
+            Traverse the DOM using:
+            <br /><br />
+            var firstItem = startItem.firstChild;
+            <br />
+            var lastItem = startItem.lastChild;
+            <br />
+            var prevItem = startItem.previousSibling;
+            <br />
+            var nextItem = startItem.nextSibling;
+            <br /><br />
+            Set attributes of an element using:
+            firstItem.setAttribute('class', 'complete');
+            <br />
+        </p>
+        <p>
+            <b>Step 2:</b> Work with the nodes. Access and update its text node or attribute values, work with the HTML content, create new nodes, etc.
+            <br /><br />
+            Elements has other elements as child nodes, attributes, and text nodes.
+            <br /><br />
+            To access a text node, use nodeValue:
+            <br /><br />
+            var itemTwo = document.getElementbyId('two');
+            <br />
+            var elText = itemTwo.firstChild.nodeValue;
+            <br />
+            elText = elText.replace('pine nutes', 'kale');
+            <br />
+            itemTwo.firstChild.nodeValue = elText;
+        </p>
+        <p>
+            <b>Step 2:</b> Create new elements by creating an element, appending an optional text node to it, then appending it to another element.
+            <br /><br />
+            var newEl = document.createElement('li');
+            <br />
+            var newText = document.createTextNode('quinoa');
+            <br />
+            newEl.appendChild(newText);
+            <br />
+            var position = document.getElementsByTagName('ul')[0];
+            <br />
+            position.appendChild(newEl);
+            <br /><br />
+            To remove an element:
+            <br /><br />
+            var removeEl = document.getElementsByTagName('li')[3];
+            <br />
+            var containerEl = removeEl.parentNode;
+            <br />
+            containerEl.removeChild(removeEl);
+        </p>
+        <p>
+            <b>Attributes</b>
+            <br /><br />
+            if(firstItem.hasAttribute('class')) {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;var attr = firstItem.getAttribute('class');<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;firstAttribute.setAttribute('class', 'cool');<br />
+            }
+        </p>
+
+        <p>
+            <b>Events</b>
+            <br /><br />
+            There are many events, such as UI events, keyboard, mouse, focus, form, and mutation events.
+            <br />
+            Event listeners listen for events and are added to elements. Once the event on the element occurs, the corresponding function triggers.
+            <br />
+            It is best to assign event listeners to parent nodes for performance and maintainability.
+            <br /><br />
+            function charCount(e, param) {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;e.preventDefault();<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;var lastkey = document.getElementById('lastkey');<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;lastkey.textContent = 'Last key in ASCII code: ' + e.keyCode + param;<br />
+            }<br />
+            el = document.getElementById('message');<br />
+            el.addEventListener('keypress', function(e) {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;charCount(e, 54);<br />
+            }, false);<br />
+        </p>
+
+        <p>
+            <b>JQuery and Ajax</b>
+            <br /><br />
+            https://github.com/SamiA1995/ndp/blob/main/grafana.js
+            <br /><br />
+            https://github.com/SamiA1995/ndp/tree/main/spring
+            <br /><br />
+            function createGrafanaDeployments(e) {<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;e.preventDefault();<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;var deployments = document.getElementById('replicas').value;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;var sampleDashboards = document.getElementById('sampleDashboards').value;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;var dashboardName = document.getElementById('dashboardName').value;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;var consoles = document.getElementById('consoles').value;<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;var grafanaJson = '{"replicas":' + deployments + ', "sampleDashboards":' + sampleDashboards + ', "dashboardName":"' + dashboardName + '", "consoles":' + consoles + '}';<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;console.log(grafanaJson);<br />
+
+                &nbsp;&nbsp;&nbsp;&nbsp;$.ajax({<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type: 'POST',<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;url: 'http://localhost:8080/grafanaDeployment',<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;data: grafanaJson,<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;success: function(data) { createGrafanaDeploymentsOutput(data); },<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;contentType: "application/json",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dataType: 'json'<br />
+                &nbsp;&nbsp;&nbsp;&nbsp;});<br />
+            }
+        <br /><br />
+        function createGrafanaDeploymentsOutput(data) {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;for(var i = 0; i < data.consoles; i++) {<br />
+            &nbsp;&nbsp;&nbsp;&nbsp;}<br />
+        }
+        </p>
+
+        <p>Resume from page 392</p>
+    </body>
+</html>
